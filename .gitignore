@@ -15,3 +15,9 @@ htmlcov/
 .vscode/
 
 .DS_Store
+
+__pycache__/
+*.pyc
+.env
+.pytest_cache/
+.coverage
