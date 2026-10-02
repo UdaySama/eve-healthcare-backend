@@ -2,6 +2,8 @@ from pydantic import BaseModel, EmailStr
 from datetime import datetime
 from typing import Optional
 
+# all project's schems below
+
 class UserSignup(BaseModel):
     username: str
     email: EmailStr

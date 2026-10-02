@@ -5,7 +5,7 @@ from app.main import app
 
 client = TestClient(app)
 
-
+# all test releted to create test centre
 def create_centre():
     response = client.post(
         "/centres/",

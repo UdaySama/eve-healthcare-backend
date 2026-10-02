@@ -44,7 +44,7 @@ The API provides:
     },
 )
 
-
+# routes
 app.include_router(auth_router)
 app.include_router(centres_router)
 app.include_router(tests_router)
@@ -58,9 +58,11 @@ app.include_router(centre_tests_router)
     summary="Health check",
     description="Checks whether the API is running.",
 )
+
+
+# /health
 def health_check():
     return {"status": "ok"}
 
 
-# /health
 

@@ -17,7 +17,7 @@ pwd_context = CryptContext(
     deprecated="auto",
 )
 
-
+# password fun
 def hash_password(password: str) -> str:
     return pwd_context.hash(password)
 
@@ -27,7 +27,7 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
 
 
 load_dotenv()
-
+# password
 SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM = os.getenv("ALGORITHM", "HS256")
 ACCESS_TOKEN_EXPIRE_MINUTES = int(
@@ -39,6 +39,7 @@ oauth2_scheme = OAuth2PasswordBearer(
     description="Enter the JWT access token obtained from /auth/login.",
 )
 
+# token
 
 def create_access_token(data: dict):
     to_encode = data.copy()
@@ -56,6 +57,7 @@ def create_access_token(data: dict):
     )
 
 
+# user
 def get_current_user(
     token: str = Depends(oauth2_scheme),
     db: Session = Depends(get_db),

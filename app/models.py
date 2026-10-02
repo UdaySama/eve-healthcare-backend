@@ -3,6 +3,8 @@ from sqlalchemy import Column, Integer, String, ForeignKey, UniqueConstraint, Da
 from app.database import Base
 
 
+# here all model's
+# usermodel
 class User(Base):
     __tablename__ = "users"
 
@@ -11,7 +13,7 @@ class User(Base):
     email = Column(String, unique=True, nullable=False, index=True)
     hashed_password = Column(String, nullable=False)
 
-
+# DiagnosticCentre model
 class DiagnosticCentre(Base):
     __tablename__ = "diagnostic_centres"
 

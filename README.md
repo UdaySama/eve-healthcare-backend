@@ -1338,4 +1338,15 @@ Docker / Docker Compose
 
 # Author
 
+
+## Note on Contributors
+
+This repository shows two contributors on GitHub (**UdaySama** and **Udaykalse**).
+Both accounts belong to the same person, **Uday Kalse**, the sole author of this project.
+
+The duplicate happened because two GitHub accounts/emails were configured on my
+laptop, so some commits were authored under a different Git identity. No one
+else contributed to this assignment. All code, design decisions, and
+implementation are my own work.
+
 Developed for the **EVE Healthcare SDE Intern — Backend Engineering Assignment**.

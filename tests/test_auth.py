@@ -6,6 +6,8 @@ from app.main import app
 client = TestClient(app)
 
 
+# all test releted to auth
+
 def test_health_check():
     response = client.get("/health")
 

@@ -5,6 +5,8 @@ import os
 
 load_dotenv()
 
+# database config
+# databse url
 DATABASE_URL = os.getenv("DATABASE_URL")
 
 engine = create_engine(DATABASE_URL)

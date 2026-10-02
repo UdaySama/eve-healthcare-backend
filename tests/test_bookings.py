@@ -5,7 +5,7 @@ from app.main import app
 
 client = TestClient(app)
 
-
+# all test releted to booking
 def create_user(username="bookinguser", email="booking@example.com"):
     response = client.post(
         "/auth/signup",
