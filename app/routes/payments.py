@@ -76,6 +76,7 @@ def payment_webhook(
     webhook_data: PaymentWebhookRequest,
     db: Session = Depends(get_db),
 ):
+    # Check duplicate webhook event first.
     existing_event = db.query(PaymentWebhookEvent).filter(
         PaymentWebhookEvent.event_id == webhook_data.event_id
     ).first()
@@ -86,12 +87,14 @@ def payment_webhook(
             "event_id": webhook_data.event_id,
         }
 
+    # Validate payment status.
     if webhook_data.status not in ["SUCCESS", "FAILED"]:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Invalid payment status",
         )
 
+    # Find the booking.
     booking = db.query(Booking).filter(
         Booking.id == webhook_data.booking_id
     ).first()
@@ -102,6 +105,14 @@ def payment_webhook(
             detail="Booking not found",
         )
 
+    # Only pending bookings can receive a new payment webhook.
+    if booking.status != "PENDING":
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Booking is not pending",
+        )
+
+    # Find an existing payment for the booking.
     payment = db.query(Payment).filter(
         Payment.booking_id == booking.id
     ).first()
@@ -119,12 +130,14 @@ def payment_webhook(
     else:
         payment.status = webhook_data.status
 
+    # Update booking status based on payment result.
     booking.status = (
         "CONFIRMED"
         if webhook_data.status == "SUCCESS"
         else "FAILED"
     )
 
+    # Store the webhook event for idempotency.
     webhook_event = PaymentWebhookEvent(
         event_id=webhook_data.event_id,
         payment_id=payment.id,

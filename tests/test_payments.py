@@ -385,3 +385,39 @@ def test_webhook_duplicate_event():
     assert second_response.json()["message"] == (
         "Webhook already processed"
     )
+
+
+def test_webhook_rejects_non_pending_booking():
+    create_user()
+    token = login_user()
+
+    centre_test_id = create_centre_test()
+    booking_id = create_booking(
+        token,
+        centre_test_id,
+    )
+
+    # First webhook confirms the booking.
+    first_response = client.post(
+        "/payments/webhook",
+        json={
+            "event_id": "evt_state_001",
+            "booking_id": booking_id,
+            "status": "SUCCESS",
+        },
+    )
+
+    assert first_response.status_code == 200
+
+    # A different webhook must not change an already-confirmed booking.
+    second_response = client.post(
+        "/payments/webhook",
+        json={
+            "event_id": "evt_state_002",
+            "booking_id": booking_id,
+            "status": "FAILED",
+        },
+    )
+
+    assert second_response.status_code == 400
+    assert second_response.json()["detail"] == "Booking is not pending"
