@@ -928,9 +928,17 @@ The documentation includes authentication, diagnostic centres, diagnostic tests,
 
 ![Diagnostic Centres Swagger](docs/Swagger/Diagnostic_Centres_swagger_.png)
 
-<!-- ### Diagnostic Tests
+## API Documentation
 
-![Diagnostic Tests Swagger](docs/Swagger/Diagnostic_Tests_swagger_.png) -->
+The API provides interactive OpenAPI documentation using FastAPI.
+
+### ReDoc
+
+Available at:
+
+`http://127.0.0.1:8000/redoc`
+
+![ReDoc](docs/ReDoc/redoc_overview.png)
 
 ### Payments
 
