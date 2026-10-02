@@ -928,9 +928,9 @@ The documentation includes authentication, diagnostic centres, diagnostic tests,
 
 ![Diagnostic Centres Swagger](docs/Swagger/Diagnostic_Centres_swagger_.png)
 
-### Diagnostic Tests
+<!-- ### Diagnostic Tests
 
-![Diagnostic Tests Swagger](docs/Swagger/Diagnostic_Tests_swagger_.png)
+![Diagnostic Tests Swagger](docs/Swagger/Diagnostic_Tests_swagger_.png) -->
 
 ### Payments
 
