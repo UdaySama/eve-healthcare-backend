@@ -1,0 +1,25 @@
+services:
+  db:
+    image: postgres:12
+    container_name: eve-healthcare-db
+    restart: unless-stopped
+    env_file:
+      - .env.docker
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  api:
+    build: .
+    container_name: eve-healthcare-api
+    restart: unless-stopped
+    env_file:
+      - .env.docker
+    ports:
+      - "8001:8000"
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:

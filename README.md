@@ -4,6 +4,8 @@ Backend service for diagnostic test bookings and simulated payments.
 
 This project was developed as part of the **EVE Healthcare SDE Intern — Backend Engineering Assignment**.
 
+---
+
 ## Tech Stack
 
 * Python 3.8+
@@ -15,31 +17,36 @@ This project was developed as part of the **EVE Healthcare SDE Intern — Backen
 * Passlib / bcrypt
 * Pytest
 * HTTPX
+* Docker
+* Docker Compose
 
-## Features
+---
 
-### Authentication
+# Features
+
+## Authentication
 
 * User signup
 * User login
-* Password hashing
+* Password hashing using bcrypt
 * JWT-based authentication
 * Authenticated user profile
-* Duplicate username and email validation
+* Duplicate username validation
+* Duplicate email validation
 
-### Diagnostic Centres
+## Diagnostic Centres
 
 * Create diagnostic centres
 * List diagnostic centres
 * Get diagnostic centre by ID
 
-### Diagnostic Tests
+## Diagnostic Tests
 
 * Create diagnostic tests
 * List diagnostic tests
 * Get diagnostic test by ID
 
-### Centre Test Pricing
+## Centre Test Pricing
 
 * Associate diagnostic tests with diagnostic centres
 * Configure test price for each centre/test combination
@@ -47,7 +54,7 @@ This project was developed as part of the **EVE Healthcare SDE Intern — Backen
 * Validate centre and test IDs
 * Prevent negative prices
 
-### Bookings
+## Bookings
 
 * Create authenticated bookings
 * Automatically use the configured test price
@@ -56,7 +63,7 @@ This project was developed as part of the **EVE Healthcare SDE Intern — Backen
 * Prevent access to another user's bookings
 * Track booking status
 
-### Payments
+## Payments
 
 * Simulated successful payments
 * Simulated failed payments
@@ -64,7 +71,7 @@ This project was developed as part of the **EVE Healthcare SDE Intern — Backen
 * Verify booking ownership
 * Prevent payments for non-pending bookings
 
-### Payment Webhooks
+## Payment Webhooks
 
 * Process simulated payment webhook events
 * Support `SUCCESS` and `FAILED` payment states
@@ -74,7 +81,9 @@ This project was developed as part of the **EVE Healthcare SDE Intern — Backen
 * Handle invalid booking IDs
 * Prevent processing webhooks for non-pending bookings
 
-## Project Structure
+---
+
+# Project Structure
 
 ```text
 eve-healthcare-backend/
@@ -115,34 +124,42 @@ eve-healthcare-backend/
 │       ├── Centre-Tests_and_Pricing_swagger_.png
 │       ├── Diagnostic_Centres_swagger_.png
 │       ├── Diagnostic_Tests_swagger_.png
-│       └── Payments_swagger_.png
+│       ├── Payments_swagger_.png
+│       └── redoc_overview.png
 │
+├── .dockerignore
 ├── .gitignore
+├── Dockerfile
+├── docker-compose.yml
 ├── README.md
 └── requirements.txt
 ```
 
-## Database Design
+> Environment files such as `.env` and `.env.docker` are intentionally excluded from the repository.
+
+---
+
+# Database Design
 
 The application uses **PostgreSQL**.
 
-### Database Relationships
+## Database Relationships
 
 ```text
 users
-  │
-  └── bookings
-          │
-          ├── centre_tests
-          │       ├── diagnostic_centres
-          │       └── diagnostic_tests
-          │
-          └── payments
-                  │
-                  └── payment_webhook_events
+│
+└── bookings
+      │
+      ├── centre_tests
+      │       ├── diagnostic_centres
+      │       └── diagnostic_tests
+      │
+      └── payments
+              │
+              └── payment_webhook_events
 ```
 
-### `users`
+## `users`
 
 Stores registered application users.
 
@@ -153,7 +170,7 @@ Fields:
 * `email`
 * `hashed_password`
 
-### `diagnostic_centres`
+## `diagnostic_centres`
 
 Stores diagnostic centre information.
 
@@ -163,7 +180,7 @@ Fields:
 * `name`
 * `location`
 
-### `diagnostic_tests`
+## `diagnostic_tests`
 
 Stores available diagnostic tests.
 
@@ -172,7 +189,7 @@ Fields:
 * `id`
 * `name`
 
-### `centre_tests`
+## `centre_tests`
 
 Connects diagnostic centres with diagnostic tests and stores the price.
 
@@ -185,7 +202,7 @@ Fields:
 
 A unique constraint prevents the same test from being added multiple times to the same diagnostic centre.
 
-### `bookings`
+## `bookings`
 
 Stores diagnostic test bookings.
 
@@ -204,7 +221,7 @@ Possible booking statuses:
 * `CONFIRMED`
 * `FAILED`
 
-### `payments`
+## `payments`
 
 Stores simulated payment information.
 
@@ -217,7 +234,7 @@ Fields:
 
 Each booking can have at most one payment.
 
-### `payment_webhook_events`
+## `payment_webhook_events`
 
 Stores processed webhook event information.
 
@@ -230,27 +247,39 @@ Fields:
 
 The `event_id` is unique and is used to prevent duplicate webhook processing.
 
-### Database Schema
+## Database Schema
 
 ![Database Schema](docs/db/database-schema.png)
 
-## Prerequisites
+---
 
-Make sure the following are installed:
+# Prerequisites
+
+For local development, make sure the following are installed:
 
 * Python 3.8+
 * PostgreSQL
 * pip
 * Git
 
-## Clone the Repository
+For Docker execution:
+
+* Docker
+* Docker Compose
+
+---
+
+# Clone the Repository
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/UdaySama/eve-healthcare-backend.git
 cd eve-healthcare-backend
 ```
 
-Replace `<repository-url>` with the GitHub repository URL.
+
+---
+
+# Local Setup
 
 ## Create a Virtual Environment
 
@@ -274,7 +303,9 @@ venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-## PostgreSQL Setup
+---
+
+# PostgreSQL Setup
 
 Create a PostgreSQL database for the application.
 
@@ -298,12 +329,14 @@ GRANT ALL PRIVILEGES ON DATABASE eve_healthcare_db TO eve_app;
 
 The exact PostgreSQL commands may vary depending on the local PostgreSQL configuration.
 
-## Environment Variables
+---
 
-Create the following file:
+# Environment Variables
+
+Create a `.env` file in the **project root**:
 
 ```text
-app/.env
+.env
 ```
 
 Add:
@@ -312,10 +345,10 @@ Add:
 DATABASE_URL=postgresql://eve_app:your_password@localhost:5432/eve_healthcare_db
 SECRET_KEY=your-secret-key
 ALGORITHM=HS256
-ACCESS_TOKEN_EXPIRE_MINUTES=30
+ACCESS_TOKEN_EXPIRE_MINUTES=5
 ```
 
-### Environment Variable Description
+## Environment Variable Description
 
 | Variable                      | Description                        |
 | ----------------------------- | ---------------------------------- |
@@ -324,9 +357,11 @@ ACCESS_TOKEN_EXPIRE_MINUTES=30
 | `ALGORITHM`                   | JWT signing algorithm              |
 | `ACCESS_TOKEN_EXPIRE_MINUTES` | JWT access token expiration time   |
 
-Do not commit `.env` files, passwords, JWT secrets, or database credentials to Git.
+> Do not commit `.env` files, passwords, JWT secrets, or database credentials to Git.
 
-## Run the Application
+---
+
+# Run the Application Locally
 
 From the project root:
 
@@ -340,59 +375,189 @@ The API will be available at:
 http://127.0.0.1:8000
 ```
 
-## API Documentation
+---
+
+# Docker Setup
+
+The project also includes Docker support for running the FastAPI application and PostgreSQL together.
+
+## Docker Files
+
+```text
+Dockerfile
+docker-compose.yml
+.dockerignore
+```
+
+The Docker Compose setup contains:
+
+* FastAPI application container
+* PostgreSQL database container
+* Docker network between the API and database
+* Persistent PostgreSQL volume
+
+## Docker Environment Variables
+
+Create a `.env.docker` file in the project root.
+
+Example:
+
+```env
+DATABASE_URL=postgresql://eve_app:your_password@db:5432/eve_healthcare_db
+SECRET_KEY=your-secret-key
+ALGORITHM=HS256
+ACCESS_TOKEN_EXPIRE_MINUTES=5
+
+POSTGRES_USER=eve_app
+POSTGRES_PASSWORD=your_password
+POSTGRES_DB=eve_healthcare_db
+```
+
+The database host is `db` because it is the PostgreSQL service name defined in `docker-compose.yml`.
+
+Do not commit `.env.docker`.
+
+## Build and Start the Docker Environment
+
+```bash
+docker compose up --build
+```
+
+The API is exposed on:
+
+```text
+http://127.0.0.1:8001
+```
+
+Swagger:
+
+```text
+http://127.0.0.1:8001/docs
+```
+
+ReDoc:
+
+```text
+http://127.0.0.1:8001/redoc
+```
+
+Health check:
+
+```text
+http://127.0.0.1:8001/health
+```
+
+Example:
+
+```bash
+curl http://127.0.0.1:8001/health
+```
+
+Response:
+
+```json
+{
+  "status": "ok"
+}
+```
+
+## Stop Docker Services
+
+```bash
+docker compose down
+```
+
+To remove the Docker PostgreSQL volume as well:
+
+```bash
+docker compose down -v
+```
+
+> Removing the volume deletes the PostgreSQL data stored in that Docker volume.
+
+---
+
+# API Documentation
 
 FastAPI automatically provides interactive OpenAPI documentation.
 
-### Swagger UI
+## Swagger UI
+
+Local:
 
 ```text
 http://127.0.0.1:8000/docs
+```
+
+Docker:
+
+```text
+http://127.0.0.1:8001/docs
 ```
 
 Swagger UI allows the API endpoints to be explored and tested interactively.
 
 ![Swagger API Documentation](docs/Swagger/default_swagger_.png)
 
-### ReDoc
+## ReDoc
+
+Local:
 
 ```text
 http://127.0.0.1:8000/redoc
 ```
 
-### OpenAPI Specification
+Docker:
 
-The raw OpenAPI specification is available at:
+```text
+http://127.0.0.1:8001/redoc
+```
+
+![ReDoc](docs/Swagger/redoc_overview.png)
+
+## OpenAPI Specification
+
+Local:
 
 ```text
 http://127.0.0.1:8000/openapi.json
 ```
 
-### Swagger Screenshots
+Docker:
 
-#### Authentication
+```text
+http://127.0.0.1:8001/openapi.json
+```
+
+---
+
+# Swagger Screenshots
+
+## Authentication
 
 ![Authentication Swagger](docs/Swagger/Authentication_swagger_.png)
 
-#### Bookings
+## Bookings
 
 ![Bookings Swagger](docs/Swagger/Bookings_swagger_.png)
 
-#### Centre Tests & Pricing
+## Centre Tests & Pricing
 
 ![Centre Tests and Pricing Swagger](docs/Swagger/Centre-Tests_and_Pricing_swagger_.png)
 
-#### Diagnostic Centres
+## Diagnostic Centres
 
 ![Diagnostic Centres Swagger](docs/Swagger/Diagnostic_Centres_swagger_.png)
 
-#### Diagnostic Tests
+## Diagnostic Tests
 
 ![Diagnostic Tests Swagger](docs/Swagger/Diagnostic_Tests_swagger_.png)
 
-#### Payments
+## Payments
 
 ![Payments Swagger](docs/Swagger/Payments_swagger_.png)
+
+---
 
 # API Endpoints
 
@@ -409,6 +574,8 @@ Example response:
   "status": "ok"
 }
 ```
+
+---
 
 # Authentication
 
@@ -479,6 +646,8 @@ Returns information about the currently authenticated user.
 }
 ```
 
+---
+
 # Diagnostic Centres
 
 ## `POST /centres/`
@@ -518,6 +687,8 @@ Example:
 GET /centres/1
 ```
 
+---
+
 # Diagnostic Tests
 
 ## `POST /tests/`
@@ -554,6 +725,8 @@ Example:
 ```text
 GET /tests/1
 ```
+
+---
 
 # Centre Test Pricing
 
@@ -596,6 +769,8 @@ Returns all centre-test pricing records.
 ## `GET /centre-tests/{centre_test_id}`
 
 Returns a specific centre-test pricing record.
+
+---
 
 # Bookings
 
@@ -651,6 +826,8 @@ Returns detailed information about a user's booking.
 ```
 
 A user cannot access another user's booking.
+
+---
 
 # Payments
 
@@ -710,6 +887,8 @@ The booking status becomes `FAILED`.
 
 A payment cannot be created again for a booking that is no longer pending.
 
+---
+
 # Payment Webhook
 
 ## `POST /payments/webhook`
@@ -755,7 +934,9 @@ Request:
 
 The associated booking becomes `FAILED`.
 
-## Webhook Idempotency
+---
+
+# Webhook Idempotency
 
 Each webhook must contain a unique `event_id`.
 
@@ -782,33 +963,37 @@ Sending the same event again returns:
 
 This prevents duplicate processing of the same payment event.
 
+---
+
 # Authentication Flow
 
 The typical application flow is:
 
 ```text
-1. User Signup
-       ↓
-2. User Login
-       ↓
-3. Receive JWT
-       ↓
-4. Access authenticated endpoints
-       ↓
-5. Create/List Diagnostic Centres
-       ↓
-6. Create/List Diagnostic Tests
-       ↓
-7. Configure Centre + Test + Price
-       ↓
-8. Create Booking
-       ↓
-9. Booking starts as PENDING
-       ↓
-10. Simulated Payment / Payment Webhook
-       ↓
-11. Booking becomes CONFIRMED or FAILED
+User Signup
+    ↓
+User Login
+    ↓
+Receive JWT
+    ↓
+Access authenticated endpoints
+    ↓
+Create/List Diagnostic Centres
+    ↓
+Create/List Diagnostic Tests
+    ↓
+Configure Centre + Test + Price
+    ↓
+Create Booking
+    ↓
+Booking starts as PENDING
+    ↓
+Simulated Payment / Payment Webhook
+    ↓
+Booking becomes CONFIRMED or FAILED
 ```
+
+---
 
 # Error Handling
 
@@ -844,6 +1029,8 @@ Handled cases include:
 * Duplicate webhook event
 * Webhook processing for a non-pending booking
 
+---
+
 # Testing
 
 The project uses **pytest** for automated API testing.
@@ -872,9 +1059,11 @@ Current automated test result:
 33 passed
 ```
 
-## Test Coverage
+---
 
-### Authentication
+# Test Coverage
+
+## Authentication
 
 * Health check
 * User signup
@@ -885,7 +1074,7 @@ Current automated test result:
 * Authenticated user profile
 * Authentication failure handling
 
-### Centre/Test Pricing
+## Centre/Test Pricing
 
 * Create pricing
 * Duplicate centre/test
@@ -896,7 +1085,7 @@ Current automated test result:
 * Negative price
 * Invalid pricing ID
 
-### Bookings
+## Bookings
 
 * Create booking
 * Correct booking amount
@@ -907,7 +1096,7 @@ Current automated test result:
 * User isolation
 * Unauthorized booking access
 
-### Payments
+## Payments
 
 * Successful payment
 * Failed payment
@@ -922,6 +1111,8 @@ Current automated test result:
 * Duplicate webhook event
 * Webhook rejection for non-pending booking
 
+---
+
 # Security Considerations
 
 The project includes the following security measures:
@@ -934,6 +1125,8 @@ The project includes the following security measures:
 * Duplicate webhook events are tracked using unique event IDs.
 * Database constraints are used for unique usernames, emails, centre/test combinations, payment bookings, and webhook event IDs.
 
+---
+
 # Assumptions
 
 The following assumptions were made for this assignment:
@@ -945,6 +1138,8 @@ The following assumptions were made for this assignment:
 5. Appointment scheduling does not integrate with an external calendar or scheduling provider.
 6. The API focuses on the required booking and payment workflow rather than production-scale infrastructure.
 7. JWT access tokens are used for authenticated API requests.
+
+---
 
 # Design Decisions
 
@@ -985,6 +1180,8 @@ A failed payment or failed webhook changes the booking to `FAILED`.
 
 Payment and webhook operations are prevented from processing a booking that is no longer pending.
 
+---
+
 # Future Improvements
 
 If this service were developed further for a production environment, possible improvements would include:
@@ -995,7 +1192,6 @@ If this service were developed further for a production environment, possible im
 * Pagination for list endpoints
 * Filtering and searching
 * Database migrations using Alembic
-* Docker and Docker Compose
 * Redis for caching
 * Celery/background jobs
 * Rate limiting
@@ -1010,12 +1206,14 @@ If this service were developed further for a production environment, possible im
 * Improved database indexing
 * HTTPS and production security configuration
 
+---
+
 # Running the Project Locally
 
 Quick start:
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/UdaySama/eve-healthcare-backend.git
 cd eve-healthcare-backend
 
 python3 -m venv venv
@@ -1024,13 +1222,9 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-Configure:
+Configure the PostgreSQL database and create the `.env` file in the project root.
 
-```text
-app/.env
-```
-
-Then start the API:
+Start the API:
 
 ```bash
 uvicorn app.main:app --reload
@@ -1054,9 +1248,59 @@ Run tests:
 pytest
 ```
 
+---
+
+# Running with Docker
+
+Build and start the complete application:
+
+```bash
+docker compose up --build
+```
+
+The Dockerized API is available at:
+
+```text
+http://127.0.0.1:8001
+```
+
+Swagger:
+
+```text
+http://127.0.0.1:8001/docs
+```
+
+ReDoc:
+
+```text
+http://127.0.0.1:8001/redoc
+```
+
+Health check:
+
+```bash
+curl http://127.0.0.1:8001/health
+```
+
+Expected response:
+
+```json
+{
+  "status": "ok"
+}
+```
+
+Stop the containers:
+
+```bash
+docker compose down
+```
+
+---
+
 # Project Status
 
-The core backend workflow is implemented and tested.
+The core backend workflow is implemented, tested, documented, and Dockerized.
 
 Current automated test result:
 
@@ -1068,25 +1312,29 @@ Implemented workflow:
 
 ```text
 Authentication
-      ↓
+    ↓
 Diagnostic Centres
-      ↓
+    ↓
 Diagnostic Tests
-      ↓
+    ↓
 Centre/Test Pricing
-      ↓
+    ↓
 Bookings
-      ↓
+    ↓
 Simulated Payments
-      ↓
+    ↓
 Payment Webhooks
-      ↓
+    ↓
 Webhook Idempotency
-      ↓
+    ↓
 Automated Tests
-      ↓
+    ↓
 Swagger / OpenAPI Documentation
+    ↓
+Docker / Docker Compose
 ```
+
+---
 
 # Author
 

@@ -1,25 +1,12 @@
-# import os
-
-# os.environ["DATABASE_URL"] = (
-#     "postgresql://eve_app:eve_dev_password@localhost:5432/eve_healthcare_test_db"
-# )
-
-# from fastapi.testclient import TestClient
-
-# from app.main import app
-
-
-# client = TestClient(app)
-
-
 import os
 
 import pytest
+from dotenv import load_dotenv
 from sqlalchemy import text
 
-os.environ["DATABASE_URL"] = (
-    "postgresql://eve_app:eve_dev_password@localhost:5432/eve_healthcare_test_db"
-)
+load_dotenv()
+
+os.environ["DATABASE_URL"] = os.environ["TEST_DATABASE_URL"]
 
 
 @pytest.fixture(autouse=True)
