@@ -928,6 +928,20 @@ The documentation includes authentication, diagnostic centres, diagnostic tests,
 
 ![Diagnostic Centres Swagger](docs/Swagger/Diagnostic_Centres_swagger_.png)
 
+
+
+### Swagger UI
+
+Available at:
+
+`http://127.0.0.1:8000/docs`
+
+![Swagger UI](docs/Swagger/default_swagger.png)
+
+### Payments
+
+![Payments Swagger](docs/Swagger/Payments_swagger_.png.png)
+
 ## API Documentation
 
 The API provides interactive OpenAPI documentation using FastAPI.
@@ -940,9 +954,7 @@ Available at:
 
 ![ReDoc](docs/Swagger/redoc_overview.png)
 
-### Payments
 
-![Payments Swagger](docs/Swagger/Payments_swagger_.png.png)
 
 # Author
 
