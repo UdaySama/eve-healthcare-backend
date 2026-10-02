@@ -936,7 +936,7 @@ Available at:
 
 `http://127.0.0.1:8000/docs`
 
-![Swagger UI](docs/Swagger/default_swagger.png)
+![Swagger UI](docs/Swagger/default_swagger_.png)
 
 ### Payments
 
