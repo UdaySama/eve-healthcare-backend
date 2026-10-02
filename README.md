@@ -938,7 +938,7 @@ Available at:
 
 `http://127.0.0.1:8000/redoc`
 
-![ReDoc](docs/ReDoc/redoc_overview.png)
+![ReDoc](docs/Swagger/redoc_overview.png)
 
 ### Payments
 
