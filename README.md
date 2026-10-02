@@ -895,6 +895,47 @@ The project currently covers:
           ↓
     Webhook Idempotency
 
+## Database 
+![Database](docs/db/database-schema.png)
+
+## Swagger / OpenAPI Documentation
+
+The API provides interactive Swagger/OpenAPI documentation through FastAPI.
+
+Swagger UI:
+
+`http://127.0.0.1:8000/docs`
+
+The documentation includes authentication, diagnostic centres, diagnostic tests, centre-specific pricing, bookings, and simulated payments.
+
+### Swagger Overview
+
+![Swagger API Documentation](docs/Swagger/default_swagger_.png)
+
+### Authentication
+
+![Authentication Swagger](docs/Swagger/Authentication_swagger_.png)
+
+### Bookings
+
+![Bookings Swagger](docs/Swagger/Bookings_swagger_.png)
+
+### Centre Tests & Pricing
+
+![Centre Tests and Pricing Swagger](docs/Swagger/Centre-Tests_and_Pricing_swagger_.png)
+
+### Diagnostic Centres
+
+![Diagnostic Centres Swagger](docs/Swagger/Diagnostic_Centres_swagger_.png)
+
+### Diagnostic Tests
+
+![Diagnostic Tests Swagger](docs/Swagger/Diagnostic_Tests_swagger_.png)
+
+### Payments
+
+![Payments Swagger](docs/Swagger/Payments_swagger_.png.png)
+
 # Author
 
 Developed for the EVE Healthcare SDE Intern — Backend Engineering Assignment.

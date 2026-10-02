@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+
 from app.routes.tests import router as tests_router
 from app.routes.auth import router as auth_router
 from app.routes.centres import router as centres_router
@@ -23,8 +24,24 @@ Base.metadata.create_all(bind=engine)
 
 
 app = FastAPI(
-    title="EVE Healthcare API",
+    title="EVE Healthcare Backend API",
+    description="""
+Backend API for diagnostic test bookings and simulated payments.
+
+The API provides:
+
+- User registration and JWT authentication
+- Diagnostic centre management
+- Diagnostic test management
+- Centre-specific test pricing
+- Authenticated diagnostic test bookings
+- Simulated payments
+- Payment webhooks with duplicate-event handling
+""",
     version="1.0.0",
+    contact={
+        "name": "EVE Healthcare Backend Assignment",
+    },
 )
 
 
@@ -36,8 +53,14 @@ app.include_router(payments_router)
 app.include_router(centre_tests_router)
 
 
-
-
-@app.get("/health")
+@app.get(
+    "/health",
+    summary="Health check",
+    description="Checks whether the API is running.",
+)
 def health_check():
     return {"status": "ok"}
+
+
+# /health
+

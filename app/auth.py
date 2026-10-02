@@ -34,7 +34,10 @@ ACCESS_TOKEN_EXPIRE_MINUTES = int(
     os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "30")
 )
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
+oauth2_scheme = OAuth2PasswordBearer(
+    tokenUrl="/auth/login",
+    description="Enter the JWT access token obtained from /auth/login.",
+)
 
 
 def create_access_token(data: dict):
@@ -88,3 +91,5 @@ def get_current_user(
         raise credentials_exception
 
     return user
+
+
